@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000">
+
+    <ImageView
+        android:id="@+id/iv_shrink"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+    <VideoView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/iv_pause"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:src="@drawable/pause"/>
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/iv_stop"
+            android:layout_width="0dp"
+            android:layout_height="80dp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/iv_change"
+            android:layout_width="0dp"
+            android:layout_height="80dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/tv_pause"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:text="切到语音通话"
+            android:textColor="#FFF"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/tv_stop"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:text="挂断"
+            android:textColor="#FFF"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/tv_change"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:text="转换摄像头"
+            android:textColor="#FFF"
+            android:gravity="center"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
