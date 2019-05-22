@@ -40,6 +40,8 @@ public class UserVideoView extends VideoView{
         int width = getDefaultSize(0, widthMeasureSpec);
         int height = getDefaultSize(0, heightMeasureSpec);
         setMeasuredDimension(width, height);
+
+        //回调函数后重新按比例缩放视频
         if(mWidth > 0){
             float scaleW = (float) width / (float) mWidth;
             float scaleH = (float) height / (float) mHeight;

@@ -6,15 +6,16 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.Contacts;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
+import com.ming.sister.video.MyAdapter;
+import com.ming.sister.video.PeopleItem;
 import com.ming.sister.video.VideoActivity;
 
 import java.io.File;
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity{
 
 
     private ListView lv_people;
-    private ArrayAdapter<String> adapter;
-    private ArrayList<String> data = new ArrayList<>();
+    private MyAdapter adapter;
+    private ArrayList<PeopleItem> data = new ArrayList<>();
     private File file;
 
     @Override
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
         setFile();
 
         lv_people = (ListView)findViewById(R.id.lv_people);
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,data);
+        adapter = new MyAdapter(this,R.layout.item_people,data);
         lv_people.setAdapter(adapter);
 
         getFileName();
@@ -50,9 +51,9 @@ public class MainActivity extends AppCompatActivity{
         lv_people.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = (String) adapter.getItem(position);
+                PeopleItem peopleItem = (PeopleItem) adapter.getItem(position);
                 Intent intent = new Intent(MainActivity.this, VideoActivity.class);
-                intent.putExtra("name",name);
+                intent.putExtra("name",peopleItem.getName());
                 startActivity(intent);
                 Toast toast = Toast.makeText(MainActivity.this,"已接通",Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER,0,600);
@@ -74,12 +75,30 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    //读取指定目录下的所有TXT文件的文件名
+
+    private int[] headsId = {R.mipmap.head01,	R.mipmap.head02,	R.mipmap.head03,
+            R.mipmap.head04,	R.mipmap.head05,	R.mipmap.head06,	R.mipmap.head07,
+            R.mipmap.head08,	R.mipmap.head09,	R.mipmap.head010,	R.mipmap.head011,
+            R.mipmap.head012,	R.mipmap.head013,	R.mipmap.head014,	R.mipmap.head015,
+            R.mipmap.head016,	R.mipmap.head017,	R.mipmap.head018};
+    private int headNumber = 0;
+
+    //读取指定目录下的所有文件的文件名
     private void getFileName() {
+
         String[] video = file.list();
         for(String s : video){
+
+            if(headNumber == headsId.length){
+                headNumber = 0;
+            }
+
             s = s.replace(".mp4","");
-            data.add(s);
+            PeopleItem peopleItem = new PeopleItem();
+            peopleItem.setName(s);
+            peopleItem.setPictureId(headsId[headNumber]);
+            headNumber++;
+            data.add(peopleItem);
         }
         adapter.notifyDataSetChanged();
     }

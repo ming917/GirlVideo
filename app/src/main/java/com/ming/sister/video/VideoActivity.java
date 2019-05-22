@@ -130,7 +130,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
 
 
 
-    //TODO
+    //TODO 设置开启摄像头
     private void getCamera(){
         new Thread(new Runnable() {
             @Override
@@ -187,6 +187,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
 
 
 
+    //初始化时间显示
     public void timerInit(){
         timer = new Timer();
         timerTask = new TimerTask() {
@@ -204,6 +205,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         timer.schedule(timerTask,0,1000);
     }
 
+    //设置时间增加逻辑
     private void setTime() {
         String time = "";
 
