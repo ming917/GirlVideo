@@ -8,7 +8,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,8 +22,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ming.sister.R;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Callback{
+public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Callback {
 
     private ImageView iv_pause;
     private ImageView iv_shrink;
@@ -32,6 +36,11 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
     private SurfaceView sfv_camera;
     private SurfaceHolder holder;
     private UserVideoView vv_video;
+    private TextView tv_time;
+    private int timeMiao;
+    private int timeFen;
+    private Timer timer;
+    private TimerTask timerTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +55,15 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         init();
         initData();
 
+        timerInit();
+
+        onClick();
+
     }
 
     private void init() {
+
+        tv_time = (TextView)findViewById(R.id.tv_time);
 
         iv_shrink = (ImageView)findViewById(R.id.iv_shrink);
         iv_pause = (ImageView)findViewById(R.id.iv_pause);
@@ -66,7 +81,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
     private void initData() {
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
-        vv_video.setVideoPath("/storage/emulated/0/sister/" + name);
+        vv_video.setVideoPath("/storage/emulated/0/sister/" + name + ".mp4");
 
         vv_video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -171,4 +186,68 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
     }
 
 
+
+    public void timerInit(){
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setTime();
+                    }
+                });
+
+            }
+        };
+        timer.schedule(timerTask,0,1000);
+    }
+
+    private void setTime() {
+        String time = "";
+
+        timeMiao++;
+        if(timeMiao == 60){
+            timeMiao = 0;
+            timeFen++;
+        }
+
+        if(timeFen < 10)
+            time = time + "0" + timeFen;
+        else
+            time = time + timeFen;
+
+        if(timeMiao < 10)
+            time = time + ":0" + timeMiao;
+        else
+            time = time + ":" + timeMiao;
+
+        tv_time.setText(time);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timerTask.cancel();
+        timer.cancel();
+        releaseCamera();
+    }
+
+    public void onClick() {
+        iv_shrink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        iv_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+    }
 }

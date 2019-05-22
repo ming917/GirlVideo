@@ -7,6 +7,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,7 +54,9 @@ public class MainActivity extends AppCompatActivity{
                 Intent intent = new Intent(MainActivity.this, VideoActivity.class);
                 intent.putExtra("name",name);
                 startActivity(intent);
-                Toast.makeText(MainActivity.this,"已接通",Toast.LENGTH_LONG).show();
+                Toast toast = Toast.makeText(MainActivity.this,"已接通",Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER,0,600);
+                toast.show();
             }
         });
     }
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity{
     private void getFileName() {
         String[] video = file.list();
         for(String s : video){
+            s = s.replace(".mp4","");
             data.add(s);
         }
         adapter.notifyDataSetChanged();
