@@ -31,7 +31,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
     private Camera camera;
     private SurfaceView sfv_camera;
     private SurfaceHolder holder;
-    private VideoView vv_video;
+    private UserVideoView vv_video;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         iv_stop = (ImageView)findViewById(R.id.iv_stop);
         iv_change = (ImageView)findViewById(R.id.iv_change);
 
-        vv_video = (VideoView)findViewById(R.id.vv_video);
+        vv_video = (UserVideoView)findViewById(R.id.vv_video);
 
         //TODO
         sfv_camera = (SurfaceView)findViewById(R.id.sfv_camera);
@@ -71,6 +71,13 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         vv_video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                int width = mp.getVideoWidth();
+                int height = mp.getVideoHeight();
+
+                //TODO 回调函数
+                vv_video.setMeasure(width,height);
+                vv_video.requestLayout();
+
                 vv_video.start();
 
             }

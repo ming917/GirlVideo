@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity{
                 Intent intent = new Intent(MainActivity.this, VideoActivity.class);
                 intent.putExtra("name",name);
                 startActivity(intent);
+                Toast.makeText(MainActivity.this,"已接通",Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -63,9 +64,9 @@ public class MainActivity extends AppCompatActivity{
         file = new File("/storage/emulated/0/sister");
         if (!file.exists()){
             boolean isSuccess = file.mkdirs();
-            Toast.makeText(MainActivity.this,"文件夹创建成功",Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainActivity.this,"文件夹创建成功",Toast.LENGTH_LONG).show();
         }else{
-            Toast.makeText(MainActivity.this,"文件夹已存在",Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainActivity.this,"文件夹已存在",Toast.LENGTH_LONG).show();
         }
     }
 
