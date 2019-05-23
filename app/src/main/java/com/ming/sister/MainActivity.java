@@ -6,11 +6,9 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,9 +33,9 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},1);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
 
 
         setFile();
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity{
                 Intent intent = new Intent(MainActivity.this, VideoActivity.class);
                 intent.putExtra("name",peopleItem.getName());
                 startActivity(intent);
-                Toast toast = Toast.makeText(MainActivity.this,"已接通",Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(MainActivity.this,"已接通",Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER,0,600);
                 toast.show();
             }
@@ -87,18 +85,26 @@ public class MainActivity extends AppCompatActivity{
     private void getFileName() {
 
         String[] video = file.list();
-        for(String s : video){
 
-            if(headNumber == headsId.length){
-                headNumber = 0;
-            }
-
-            s = s.replace(".mp4","");
+        if(video.length == 0){
             PeopleItem peopleItem = new PeopleItem();
-            peopleItem.setName(s);
-            peopleItem.setPictureId(headsId[headNumber]);
-            headNumber++;
+            peopleItem.setName("请将后缀为mp4的视频文件放入根目录（即文件管理点开后）下的sister文件夹里," +
+                    "然后就可以使用此款软件了！让我们一起愉快的玩耍吧！");
             data.add(peopleItem);
+        }else{
+            for(String s : video){
+
+                if(headNumber == headsId.length){
+                    headNumber = 0;
+                }
+
+                s = s.replace(".mp4","");
+                PeopleItem peopleItem = new PeopleItem();
+                peopleItem.setName(s);
+                peopleItem.setPictureId(headsId[headNumber]);
+                headNumber++;
+                data.add(peopleItem);
+            }
         }
         adapter.notifyDataSetChanged();
     }

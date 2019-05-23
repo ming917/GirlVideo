@@ -41,6 +41,8 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
     private int timeFen;
     private Timer timer;
     private TimerTask timerTask;
+    private boolean cameraFlag = true;
+    private boolean pauseFlag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +188,26 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
     }
 
 
+    //切换摄像头
+    public void cameraChange() {
+        if (camera != null) {
+            camera.release();
+            camera = null;
+        }
+        if (cameraFlag){
+            camera = Camera.open(0);
+            cameraFlag = false;
+            setStartPreView(camera,holder);
+
+        } else {
+            camera = Camera.open(1);
+            cameraFlag = true;
+            setStartPreView(camera,holder);
+        }
+
+    }
+
+
 
     //初始化时间显示
     public void timerInit(){
@@ -236,6 +258,21 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         releaseCamera();
     }
 
+    //按下暂停逻辑
+    public void cameraPause(){
+        if(pauseFlag){
+            vv_video.pause();
+            timerTask.cancel();
+            timer.cancel();
+            pauseFlag = false;
+        }else{
+            timerInit();
+            vv_video.start();
+            pauseFlag = true;
+        }
+
+    }
+
     public void onClick() {
         iv_shrink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,10 +281,24 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
             }
         });
 
+        iv_pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraPause();
+            }
+        });
+
         iv_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        iv_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraChange();
             }
         });
 
